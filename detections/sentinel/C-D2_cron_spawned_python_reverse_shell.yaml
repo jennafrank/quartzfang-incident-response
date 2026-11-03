@@ -1,0 +1,41 @@
+id: 6d316849-16f3-525d-9131-1a5099db91f0
+name: 'C-D2 Cron-parented python with socket and shell-spawn markers'
+description: 'Flags python/python3 whose parent is cron and whose command line has socket plus a shell or dup2 reference. Backtest on this incident''s data: PID 4401 at 06:52:52 only; zero baseline. Misses compiled implants; pair with any cron child making an outbound connection. Tested on this incident''s data, not a production false-positive rate.'
+severity: High  # incident severity from the report (cover, section 03); the report assigns no per-rule severity
+requiredDataConnectors: []
+queryFrequency: 5m
+queryPeriod: 10m
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - Execution
+relevantTechniques:
+  - T1053
+  - T1059
+subTechniques:
+  - T1053.003
+  - T1059.006
+query: |
+  DeviceProcessEvents_CL
+  | where FileName in~ ("python3", "python")
+  | where InitiatingProcessFileName in~ ("cron", "CRON")
+  | where ProcessCommandLine has "socket"
+      and ProcessCommandLine has_any ("subprocess", "dup2", "/bin/sh", "/bin/bash")
+  | project Timestamp, DeviceName, AccountName, ProcessCommandLine, ProcessId, InitiatingProcessId
+entityMappings:
+  - entityType: Host
+    fieldMappings:
+      - identifier: HostName
+        columnName: DeviceName
+  - entityType: Account
+    fieldMappings:
+      - identifier: Name
+        columnName: AccountName
+  - entityType: Process
+    fieldMappings:
+      - identifier: ProcessId
+        columnName: ProcessId
+      - identifier: CommandLine
+        columnName: ProcessCommandLine
+version: 1.0.0
+kind: Scheduled

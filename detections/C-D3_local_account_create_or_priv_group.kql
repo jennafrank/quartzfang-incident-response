@@ -1,0 +1,7 @@
+// C-D3 any account creation, or usermod adding a privileged group (T1136.001)
+// Copied as printed in Appendix C of the v4.0 report. The printed rule carries no backtest time bounds or RunId filter.
+// Production schedule from the report: every 5 minutes over a 10-minute lookback.
+DeviceProcessEvents_CL
+| where FileName in~ ("useradd", "adduser", "usermod")
+| where FileName in~ ("useradd", "adduser") or ProcessCommandLine has_any ("sudo", "wheel", "-aG")
+| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessId

@@ -1,0 +1,8 @@
+// C-D4 enumeration-style statements on sc-db01, any account (T1213.006)
+// Copied as printed in Appendix C of the v4.0 report. The printed rule carries no backtest time bounds or RunId filter.
+// Production schedule from the report: every 5 minutes over a 10-minute lookback.
+Syslog
+| where Computer =~ "sc-db01" and SyslogMessage has "statement:"
+| where SyslogMessage has_any ("SELECT *", "pg_shadow", "information_schema", "password_hash")
+    or (SyslogMessage has "FROM customers" and SyslogMessage !has "WHERE")
+| project TimeGenerated, Computer, SyslogMessage

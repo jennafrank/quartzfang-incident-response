@@ -1,0 +1,9 @@
+// A-29: Process tree of PID 4401, compact view
+// Supports: F3, F4, F8, F9, timeline · Captures: CAP-53
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceProcessEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where ProcessId == 4401 or InitiatingProcessId == 4401
+| project Timestamp, FileName, ProcessId, InitiatingProcessId
+| distinct * | sort by Timestamp asc

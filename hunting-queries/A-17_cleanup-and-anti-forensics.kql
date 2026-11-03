@@ -1,0 +1,10 @@
+// A-17: Cleanup and anti-forensics (N-03)
+// Supports: N-03 · Captures: CAP-38
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceFileEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T08:15:01Z) .. datetime(2026-09-20T09:30:00Z))
+| where ActionType in ("FileDeleted", "FileModified")
+| where FolderPath has_any (".portal-cache", "svc_monitor", "/var/spool/cron", "history")
+| project Timestamp, ActionType, FolderPath, FileName, InitiatingProcessFileName
+| distinct * | sort by Timestamp asc

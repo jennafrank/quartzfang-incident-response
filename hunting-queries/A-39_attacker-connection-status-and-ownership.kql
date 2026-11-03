@@ -1,0 +1,9 @@
+// A-39: Attacker connection status and ownership
+// Supports: F8 · Captures: CAP-69
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceNetworkEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T08:20:00Z))
+| where InitiatingProcessId in (4401, 4430) or RemoteIP in ("203.0.113.87", "198.51.100.210")
+| project Timestamp, ActionType, InitiatingProcessId, InitiatingProcessFileName, RemoteIP, RemotePort
+| distinct * | sort by Timestamp asc

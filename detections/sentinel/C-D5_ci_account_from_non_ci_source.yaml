@@ -1,0 +1,24 @@
+id: e25e9b08-33b9-5fa3-9670-987335c8b9cb
+name: 'C-D5 CI account used from a non-CI source'
+description: 'Flags ci-builder registry operations from any source other than 10.5.0.100. Backtest on this incident''s data: 10.5.0.10 only, 4 distinct operations (8 logged rows, duplicate ingestion), 07:33:01.905 to 07:33:05.119; no baseline or replay hits. Tuning: maintain the CI runner allowlist. Tested on this incident''s data, not a production false-positive rate.'
+severity: High  # incident severity from the report (cover, section 03); the report assigns no per-rule severity
+requiredDataConnectors: []
+queryFrequency: 5m
+queryPeriod: 10m
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - DefenseEvasion
+relevantTechniques:
+  - T1078
+query: |
+  ContainerRegistryLog_CL
+  | where Username == "ci-builder" and SrcIpAddr != "10.5.0.100"
+  | project TimeGenerated, SrcIpAddr, Operation, Resource
+entityMappings:
+  - entityType: IP
+    fieldMappings:
+      - identifier: Address
+        columnName: SrcIpAddr
+version: 1.0.0
+kind: Scheduled

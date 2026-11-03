@@ -1,0 +1,17 @@
+// A-23: Exact-host portal_svc logins on sc-db01
+// Supports: F4, F5 · Captures: CAP-45 to CAP-46
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// This item holds 2 queries; run each one on its own.
+Syslog
+| where Computer =~ "sc-db01"
+| where TimeGenerated between (datetime(2026-09-20T07:10:00Z) .. datetime(2026-09-20T07:30:00Z))
+| where SyslogMessage has "connection authorized"
+| project TimeGenerated, SyslogMessage
+| distinct *
+| sort by TimeGenerated asc
+
+Syslog
+| where Computer =~ "sc-db01"
+| where TimeGenerated between (datetime(2026-09-20T07:30:00Z) .. datetime(2026-09-20T08:00:00Z))
+| where SyslogMessage has "connection authorized"
+| project TimeGenerated, SyslogMessage

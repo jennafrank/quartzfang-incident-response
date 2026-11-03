@@ -1,0 +1,8 @@
+// A-08: Registry operations, attack window
+// Supports: F4, F6, R-04 · Captures: CAP-14 to CAP-19
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+ContainerRegistryLog_CL
+| where RunId == "qf-121-20260920"
+| where TimeGenerated between (datetime(2026-09-20T07:00:00Z) .. datetime(2026-09-20T09:30:00Z))
+| project TimeGenerated, EventType, Username, SrcIpAddr, Operation, Resource, HttpStatusCode
+| distinct * | sort by TimeGenerated asc

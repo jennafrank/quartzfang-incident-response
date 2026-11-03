@@ -1,0 +1,9 @@
+// A-14: Noise: DB spike content and pg_dump
+// Supports: R-02, R-03 · Captures: CAP-31 to CAP-35
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+Syslog
+| where Computer has "db01"
+| where TimeGenerated between (datetime(2026-09-20T07:15:00Z) .. datetime(2026-09-20T07:50:00Z))
+| extend Msg = replace_regex(substring(SyslogMessage, 0, 200), @"\d+", "N")
+| summarize Events=count(), First=min(TimeGenerated), Last=max(TimeGenerated) by ProcessName, Msg
+| sort by Events desc

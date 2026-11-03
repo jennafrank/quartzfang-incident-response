@@ -1,0 +1,16 @@
+// A-24: Exact-host FATAL volume on sc-db01
+// Supports: R-03 · Captures: CAP-47 to CAP-48
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// This item holds 2 queries; run each one on its own.
+Syslog
+| where Computer =~ "sc-db01"
+| where TimeGenerated between (datetime(2026-09-20T06:30:00Z) .. datetime(2026-09-20T08:30:00Z))
+| where SyslogMessage has "FATAL"
+| summarize Events = count() by bin(TimeGenerated, 5m)
+| sort by TimeGenerated asc
+
+Syslog
+| where Computer =~ "sc-db01"
+| where TimeGenerated between (datetime(2026-09-20T06:30:00Z) .. datetime(2026-09-20T08:30:00Z))
+| where SyslogMessage has "FATAL"
+| summarize First = min(TimeGenerated), Last = max(TimeGenerated), Events = count()

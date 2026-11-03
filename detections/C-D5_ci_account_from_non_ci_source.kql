@@ -1,0 +1,6 @@
+// C-D5 CI account used from a non-CI source (T1078)
+// Copied as printed in Appendix C of the v4.0 report. The printed rule carries no backtest time bounds or RunId filter.
+// Production schedule from the report: every 5 minutes over a 10-minute lookback.
+ContainerRegistryLog_CL
+| where Username == "ci-builder" and SrcIpAddr != "10.5.0.100"
+| project TimeGenerated, SrcIpAddr, Operation, Resource

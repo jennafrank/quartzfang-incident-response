@@ -1,0 +1,10 @@
+// A-22: Account events for svc_monitor
+// Supports: F9 · Captures: CAP-44
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceEvents_CL
+| where isempty(RunId)
+| where DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T07:00:00Z) .. datetime(2026-09-20T08:35:00Z))
+| project Timestamp, ActionType, AccountName, InitiatingProcessFileName, InitiatingProcessAccountName
+| distinct *
+| sort by Timestamp asc

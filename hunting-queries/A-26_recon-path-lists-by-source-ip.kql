@@ -1,0 +1,8 @@
+// A-26: Recon path lists by source IP
+// Supports: F1 · Captures: CAP-50
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+PortalAccessLog_CL
+| where RunId == "qf-121-20260920"
+| where TimeGenerated between (datetime(2026-09-20T06:29:00Z) .. datetime(2026-09-20T06:33:00Z))
+| where SrcIpAddr in ("198.51.100.31", "198.51.100.45", "198.51.100.62")
+| summarize Paths=make_set(UrlOriginal, 20), Distinct=dcount(UrlOriginal) by SrcIpAddr

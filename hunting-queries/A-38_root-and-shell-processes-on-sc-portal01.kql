@@ -1,0 +1,10 @@
+// A-38: Root and shell processes on sc-portal01 (N-14, G10)
+// Supports: N-14, G10 · Captures: CAP-68
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceProcessEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where AccountName == "root" or FileName in~ ("sh", "bash", "dash")
+| summarize Runs=count(), First=min(Timestamp), Parents=make_set(InitiatingProcessFileName) by FileName,
+    AccountName
+| sort by First asc

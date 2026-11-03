@@ -1,0 +1,7 @@
+// A-41: Ingestion times of duplicated rows
+// Supports: Section 04 · Captures: CAP-73
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+Syslog
+| where Computer =~ "sc-db01"
+| where TimeGenerated between (datetime(2026-09-20T07:16:16Z) .. datetime(2026-09-20T07:16:17Z))
+| project TimeGenerated, Ingested=ingestion_time(), HostName, HostIP, SourceSystem, ProcessID, SyslogMessage

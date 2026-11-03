@@ -1,0 +1,11 @@
+// A-25: All internal connections from sc-portal01, no PID filter (AH-1)
+// Supports: AH-1 · Captures: CAP-49
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceNetworkEvents_CL
+| where isempty(RunId)
+| where DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:00:00Z))
+| where RemoteIP startswith "10.5."
+| summarize Conns=count(), First=min(Timestamp), Last=max(Timestamp) by InitiatingProcessId,
+    InitiatingProcessFileName, RemoteIP, RemotePort
+| sort by First asc

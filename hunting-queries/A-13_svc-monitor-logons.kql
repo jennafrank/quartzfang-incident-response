@@ -1,0 +1,7 @@
+// A-13: svc_monitor logons (N-04)
+// Supports: N-04 · Captures: CAP-29 to CAP-30
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceLogonEvents_CL
+| where isempty(RunId)
+| where Timestamp between (datetime(2026-09-20T08:29:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where AccountName == "svc_monitor"

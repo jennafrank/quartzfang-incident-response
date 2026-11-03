@@ -1,0 +1,9 @@
+// A-48: pg_dump runs on sc-db01 (R-02)
+// Supports: R-02 · Captures: CAP-88 to CAP-90
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceProcessEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-db01"
+| where Timestamp between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where FileName =~ "pg_dump"
+| project Timestamp, AccountName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessAccountName
+| distinct * | sort by Timestamp asc

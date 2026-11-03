@@ -1,0 +1,8 @@
+// A-46: qf-122 portal process tree around 23:12 (R-05)
+// Supports: R-05, AH-9 · Captures: CAP-86
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceProcessEvents_CL
+| where RunId == "qf-122-20260921" and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-19T22:30:00Z) .. datetime(2026-09-20T00:30:00Z))
+| project Timestamp, FileName, ProcessId, InitiatingProcessId, AccountName
+| sort by Timestamp asc

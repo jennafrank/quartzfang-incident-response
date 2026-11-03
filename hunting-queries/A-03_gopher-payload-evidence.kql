@@ -1,0 +1,9 @@
+// A-03: Gopher payload evidence
+// Supports: F3 · Captures: CAP-05 to CAP-06
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+PortalAccessLog_CL
+| where RunId == "qf-121-20260920"
+| where TimeGenerated between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T06:53:00Z))
+| where UrlOriginal has "gopher"
+| extend Decoded = url_decode(UrlOriginal)
+| project TimeGenerated, Decoded, EventOriginalMessage | distinct *

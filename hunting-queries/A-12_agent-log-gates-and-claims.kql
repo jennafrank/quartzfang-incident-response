@@ -1,0 +1,8 @@
+// A-12: Agent log, gates and claims (agent clock)
+// Supports: F10 · Captures: CAP-26 to CAP-28
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+LLMAgentLogs_CL
+| where RunId == "qf-155-20261024"
+| where TimeGenerated between (datetime(2026-10-24T06:30:00Z) .. datetime(2026-10-24T08:35:00Z))
+| project TimeGenerated, actor, tool_name, user_input, model_response, gate_decision
+| distinct * | sort by TimeGenerated asc

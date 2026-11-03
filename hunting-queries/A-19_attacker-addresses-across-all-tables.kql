@@ -1,0 +1,16 @@
+// A-19: Attacker addresses across all tables (N-07)
+// Supports: N-07 · Captures: CAP-40 to CAP-41
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// This item holds 2 queries; run each one on its own.
+union withsource=T *
+| where TimeGenerated between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where * has "203.0.113.87" or * has "198.51.100.210" or * has "198.51.100.31"
+    or * has "198.51.100.45" or * has "198.51.100.62"
+| summarize Rows=count() by T, Computer
+
+union withsource=T *
+| where TimeGenerated between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where * has "203.0.113.87" or * has "198.51.100.210" or * has "198.51.100.31" or * has "198.51.100.45" or *
+    has "198.51.100.62"
+| extend Host = iff(isnotempty(Computer), Computer, tostring(column_ifexists("DeviceName", "")))
+| summarize Rows=count() by T, Host

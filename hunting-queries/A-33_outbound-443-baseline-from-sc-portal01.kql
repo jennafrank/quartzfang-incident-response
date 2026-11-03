@@ -1,0 +1,10 @@
+// A-33: Outbound 443 baseline from sc-portal01
+// Supports: F8 · Captures: CAP-58
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+DeviceNetworkEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))
+| where RemotePort == 443 and not(RemoteIP startswith "10.")
+| summarize Conns=count(), PIDs=make_set(InitiatingProcessId, 10),
+    Accounts=make_set(InitiatingProcessAccountName) by RemoteIP, InitiatingProcessFileName
+| sort by Conns desc

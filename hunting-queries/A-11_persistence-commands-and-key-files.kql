@@ -1,0 +1,15 @@
+// A-11: Persistence commands and key files
+// Supports: F9 · Captures: CAP-24 to CAP-25
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// This item holds 2 queries; run each one on its own.
+DeviceProcessEvents_CL
+| where isempty(RunId)
+| where Timestamp between (datetime(2026-09-20T08:15:00Z) .. datetime(2026-09-20T08:40:00Z))
+| where ProcessCommandLine has_any ("useradd","adduser","svc_monitor","sudoers","ssh-keygen","authorized_keys","chpasswd")
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine, InitiatingProcessId | distinct *
+
+DeviceFileEvents_CL
+| where isempty(RunId) and DeviceName =~ "sc-portal01"
+| where Timestamp between (datetime(2026-09-20T08:29:00Z) .. datetime(2026-09-20T08:40:00Z))
+| where FolderPath has "svc_monitor"
+| project Timestamp, ActionType, FileName, FolderPath, InitiatingProcessFileName | distinct *

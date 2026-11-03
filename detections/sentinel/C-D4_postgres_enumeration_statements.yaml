@@ -1,0 +1,28 @@
+id: bae20620-4125-50f1-96ca-eda5773cf6f9
+name: 'C-D4 Enumeration-style Postgres statements on sc-db01'
+description: 'Flags Postgres statements on sc-db01 containing SELECT *, pg_shadow, information_schema or password_hash, or an unfiltered read FROM customers (any user). Backtest on this incident''s data: matches 7 of the 8 statements in F5; the burst-2 projects ... ORDER BY revision DESC query is outside its coverage; the only other hits are suspected replay copies (R-05); zero application statements match. Tuning: exclude pg_dump (backup account); application_name is not a usable filter; suppress known replay or test windows. Tested on this incident''s data, not a production false-positive rate.'
+severity: High  # incident severity from the report (cover, section 03); the report assigns no per-rule severity
+requiredDataConnectors: []
+queryFrequency: 5m
+queryPeriod: 10m
+triggerOperator: gt
+triggerThreshold: 0
+tactics:
+  - Collection
+relevantTechniques:
+  - T1213
+subTechniques:
+  - T1213.006
+query: |
+  Syslog
+  | where Computer =~ "sc-db01" and SyslogMessage has "statement:"
+  | where SyslogMessage has_any ("SELECT *", "pg_shadow", "information_schema", "password_hash")
+      or (SyslogMessage has "FROM customers" and SyslogMessage !has "WHERE")
+  | project TimeGenerated, Computer, SyslogMessage
+entityMappings:
+  - entityType: Host
+    fieldMappings:
+      - identifier: HostName
+        columnName: Computer
+version: 1.0.0
+kind: Scheduled
