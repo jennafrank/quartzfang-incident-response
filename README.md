@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="quartzfang-hero.svg" alt="Quartzfang Banner" width="100%">
+</p>
+
 # Operation QUARTZFANG: Incident Response
 
 **One web request. Full control of a server. And an attacker's AI that overstated its own wins.**
