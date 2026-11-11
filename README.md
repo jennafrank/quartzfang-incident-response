@@ -8,7 +8,7 @@
 
 An incident investigation in a Microsoft Sentinel workspace, by Jenna Frank. Report v4.0, issued 2026-11-01. TLP:CLEAR, published with permission.
 
-[Full report (PDF)](report/QUARTZFANG_IR_Report_JennaFrank_v4.0.pdf) · Full-resolution edition on the [Releases](../../releases) page
+**[Project site](https://jennafrank.github.io/quartzfang-incident-response/)** · [Impact, root cause and response plan](docs/response-and-recommendations.md) · [Full report (PDF)](report/QUARTZFANG_IR_Report_JennaFrank_v4.0.pdf) · Full-resolution edition on the [Releases](../../releases) page
 
 ## In 60 seconds
 
@@ -71,6 +71,18 @@ What's worth a closer look:
 
 Timeline: [timeline.md](investigation/timeline.md). ATT&CK: [attack-mapping.md](mitre/attack-mapping.md). Queries: [hunting-queries/](hunting-queries/). Evidence: [evidence/](evidence/).
 
+## Repository structure
+
+| Path | Contents |
+|---|---|
+| `report/` | The full IR report, v4.0 PDF (TLP:CLEAR) |
+| `investigation/` | [Findings](investigation/findings.md), [timeline](investigation/timeline.md), [gaps](investigation/gaps.md), [what I ruled out](investigation/what-i-ruled-out.md), [AI agent claims audit](investigation/ai-agent-claims.md) |
+| `docs/` | GitHub Pages site: [`index.md`](docs/index.md) and [impact, root cause and response](docs/response-and-recommendations.md) (report sections 08 to 14 in Markdown) |
+| `detections/` | 5 KQL detections, with Sentinel analytics rule YAML in `detections/sentinel/` |
+| `hunting-queries/` | The 49 queries (A-01 to A-49) behind the findings |
+| `evidence/` | Query-result captures and [MANIFEST.md](evidence/MANIFEST.md) |
+| `mitre/` | [ATT&CK mapping](mitre/attack-mapping.md) |
+
 ## Skills demonstrated
 
 KQL · Microsoft Sentinel · Incident response (NIST SP 800-61r3, SANS PICERL) · Detection engineering · MITRE ATT&CK mapping · Evidence handling (SHA-256 per capture, chain of custody) · AI-assisted investigation with human verification
@@ -81,7 +93,7 @@ I used AI tools. Claude (Anthropic) was my hunt partner and helped draft the rep
 
 ## About me
 
-Jenna Frank, SOC Operations Lead. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber)
+Jenna Frank, SOC Operations Lead. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber) · Portfolio: [JennaFrank.co](https://www.JennaFrank.co)
 
 ## License
 
