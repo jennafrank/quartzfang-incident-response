@@ -4,7 +4,7 @@ title: "Operation QUARTZFANG: Incident Response"
 
 ![QUARTZFANG banner: SSRF to Redis to root, 10 findings, 5 detections, 4 hosts, 97 minutes of observed activity](assets/quartzfang-hero.svg)
 
-**Jenna Frank (Hot Pink Huntress)** · [Portfolio](https://www.JennaFrank.co) · [Repository](https://github.com/jennafrank/quartzfang-incident-response)
+**Jenna Frank (Hot Pink Huntress)**, Security Operations Manager · [Portfolio](https://www.JennaFrank.co) · [Repository](https://github.com/jennafrank/quartzfang-incident-response)
 
 On 20 September 2026, an attacker took full control of SemiCrest's customer portal server with a single web request. It then used two stolen service passwords to reach three more systems. I investigated the incident in Microsoft Sentinel, following NIST SP 800-61r3 and SANS PICERL. The result is 10 findings with confidence levels, 5 detection rules tested on the incident's data, and a containment, eradication and recovery plan.
 

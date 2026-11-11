@@ -93,7 +93,7 @@ I used AI tools. Claude (Anthropic) was my hunt partner and helped draft the rep
 
 ## About me
 
-Jenna Frank, SOC Operations Lead. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber) · Portfolio: [JennaFrank.co](https://www.JennaFrank.co)
+Jenna Frank, Security Operations Manager. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber) · Portfolio: [JennaFrank.co](https://www.JennaFrank.co)
 
 ## License
 
