@@ -1,8 +1,8 @@
 # MITRE ATT&CK mapping
 
-Source: section 07 and Appendix C of the v4.0 report. ATT&CK Enterprise, accessed 2026-10-31.
+Source: section 07 and Appendix C of the v5.0 report. ATT&CK Enterprise, accessed 2026-10-31.
 
-The core chain (section 07): T1190, T1053.003, T1078, T1213.006, T1048.002 (attempted), T1136.001.
+The core chain (section 07): T1190, T1053.003, T1078, T1213.006, T1048.002 (attempted), T1136.001. The lateral movement in F5 to F7 is mapped under T1078, the closest fit for logins with stolen application passwords.
 
 ## Observed
 
@@ -30,8 +30,8 @@ These rest on inference, not a direct record.
 | Technique (ID) | Basis | Confidence | Finding |
 |---|---|---|---|
 | Non-Standard Port (T1571) | Raw socket on 443, from the payload | Not stated | F3 |
-| Unsecured Credentials: Credentials In Files (T1552.001) | Settings file displayed; command output not logged (G4) | Medium | F4 |
-| Obtain Capabilities: Artificial Intelligence (T1588.007) | From the separate agent log | Medium | F10 |
+| Unsecured Credentials: Credentials In Files (T1552.001) | Settings file displayed; command output not logged (G4) | Moderate | F4 |
+| Obtain Capabilities: Artificial Intelligence (T1588.007) | From the separate agent log | Moderate | F10 |
 
 ## Mapping notes
 

@@ -1,5 +1,5 @@
 // C-D1 server-side fetch to a non-http(s) scheme or loopback/link-local target (T1190)
-// Copied as printed in Appendix C of the v4.0 report. The printed rule carries no backtest time bounds or RunId filter.
+// Copied as printed in Appendix C of the v5.0 report. The printed rule carries no backtest time bounds or RunId filter.
 // Production schedule from the report: every 5 minutes over a 10-minute lookback.
 PortalAccessLog_CL
 | where UrlOriginal has "/api/v1/preview"

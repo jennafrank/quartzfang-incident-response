@@ -1,6 +1,6 @@
 id: 7e1c2689-2e28-5e57-8939-722613556da4
 name: 'C-D3 Local account creation, or usermod adding a privileged group'
-description: 'Flags any useradd/adduser, or usermod with sudo, wheel or -aG. Backtest on this incident''s data: svc_monitor at 08:29:35 and 08:29:45 only; zero baseline. Fires on legitimate provisioning; add parent-process or same-account create-and-grant correlation. False-positive behaviour on real provisioning is untested. Tested on this incident''s data, not a production false-positive rate.'
+description: 'Flags any useradd/adduser, or usermod with sudo, wheel or -aG. Backtest on this incident''s data: svc_monitor at 08:29:35 and 08:29:45 only; zero baseline. Fires on legitimate provisioning; add parent-process or same-account create-and-grant correlation. False-positive behavior on real provisioning is untested. Tested on this incident''s data, not a production false-positive rate.'
 severity: High  # incident severity from the report (cover, section 03); the report assigns no per-rule severity
 requiredDataConnectors: []
 queryFrequency: 5m

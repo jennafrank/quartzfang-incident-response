@@ -1,6 +1,6 @@
 // A-35: Portal activity at 2026-09-19 23:05 to 23:20 (R-05)
 // Supports: R-05, AH-9 · Captures: CAP-60
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 union DeviceProcessEvents_CL, DeviceNetworkEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-19T23:05:00Z) .. datetime(2026-09-19T23:20:00Z))

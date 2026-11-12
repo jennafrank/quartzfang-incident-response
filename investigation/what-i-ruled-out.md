@@ -1,6 +1,6 @@
 # What I ruled out
 
-Source: section 6.7 and Appendix B of the v4.0 report. Three registers sit behind the findings:
+Source: section 6.7 and Appendix B of the v5.0 report. Queries cited here but not printed in the report's Appendix A are in [`../hunting-queries/`](../hunting-queries/). Three registers sit behind the findings:
 
 - **R-** look-alike activity: things that looked like the attack but were routine.
 - **N-** searches that found nothing. A null result is only as wide as the search, so each one states where I looked.
@@ -12,11 +12,10 @@ Each negative is bounded to the records and windows it names.
 
 | Possibility tested | Result | Ref |
 |---|---|---|
-| A stolen remote login was the way in | Ruled out as the entry for this chain: the scheduled task, not a login, started the attacker's program; SSH logins then are known administrators on the internal network | AH-2, N-06 |
-| The portal application itself made the connections to other systems | Ruled out for the observed connections: each was made by the attacker's root program (PID 4401) | AH-1 |
-| An earlier break-in at 23:12 on 19 September | Not supported: those rows match a sped-up copy of the attack, with no portal activity | AH-9, R-05 |
-| The attacker ran programs on the database, build store or admin platform | None found in the logs examined (account-level access is in F5 to F7); attacker addresses appear only on the portal | N-07, N-13 |
-| Attacker database activity after the second burst | Only normal application activity appeared in the database logins and queries examined from 07:46 to 09:30; the other tested look-alikes were routine | N-12, R-02 to R-04 |
+| A stolen remote login was the way in | Ruled out for this chain: the scheduled task, not a login, started the attacker's process. SSH logins at the time are known administrators on the internal network | AH-2, N-06 |
+| The portal application itself made the connections to other systems | Ruled out for the observed connections: each was made by the attacker's root process (PID 4401) | AH-1 |
+| The attacker ran processes on the database, build store or admin platform | None found in the logs examined (account-level access is in F5 to F7). Attacker addresses appear only on the portal | N-07, N-13 |
+| Attacker database activity after the second burst | Only normal application activity in the database logins and queries examined, 07:46 to 09:30. The other tested look-alikes were routine | N-12, R-02 to R-04 |
 
 ## R-: look-alike activity
 
@@ -26,7 +25,7 @@ Each negative is bounded to the records and windows it names.
 | R-02 | `pg_dump` as `portal_svc` during the attack | Theft with the attacker's account | Routine job: 44 runs across 33.5 hours at irregular times, including 07:09:09, 07:22:21, 07:25:17 and 07:47:50 on 09-20, all `backup` via `bash` to `-h localhost`, written to `/backup/nightly/semicrest.dump`; identical before the intrusion; no network path | A-48 |
 | R-03 | Postgres spike 07:29:57 to 07:48:47 | Enumeration | 406 logged FATAL rows on sc-db01 from 07:29:57 to 07:48:47 (exact-host A-24, raw count), all connection rejections (`reserved for SUPERUSER`, `too many clients`, A-14); no queries in them | A-24, A-14 |
 | R-04 | `ci-builder` pushes and pulls | Registry abuse | All from CI runner 10.5.0.100, EventType `ci_pipeline` | A-08 |
-| R-05 | Enumeration statements on sc-db01 and `portal_svc` admin API calls, 2026-09-19 23:12 to 23:14 | An earlier intrusion, or app baseline | Most likely a duplicate or logging artefact (Syslog carries no RunId, so the qf-122 link is by co-occurrence). See below. | A-34 to A-36, A-46, A-47 |
+| R-05 | Enumeration statements on sc-db01 and `portal_svc` admin API calls, 2026-09-19 23:12 to 23:14 | An earlier intrusion, or app baseline | Most likely a duplicate or logging artifact (Syslog carries no RunId, so the qf-122 link is by co-occurrence). See below. | A-34 to A-36, A-46, A-47 |
 
 ### Why I excluded the 23:12 replay rows (R-05)
 
@@ -56,7 +55,7 @@ I read this as a time-compressed replay. Its exact Syslog run attribution is unv
 | N-09 | Files written into `.portal-cache` before archiving | DeviceFileEvents_CL, 06:52 to 08:02:05 | Zero rows | A-21 |
 | N-10 | `authorized_keys` written anywhere | DeviceFileEvents_CL, all devices, 06:52 to 09:30 | Zero rows | A-30 |
 | N-11 | AI-claimed `db_admin` credential used | Syslog sc-db01, 09-19 00:00 to 09-20 09:30 | Zero rows | A-27 |
-| N-12 | Attacker database activity after burst 2 | Syslog sc-db01 logins and statements, 07:46 to 09:30 | Only parameterised application statements | A-42 |
+| N-12 | Attacker database activity after burst 2 | Syslog sc-db01 logins and statements, 07:46 to 09:30 | Only parameterized application statements | A-42 |
 | N-13 | Attacker activity on sc-db01, sc-registry01, sc-admin01 | Process, device and file events, 06:52 to 09:30 | Only `dpkg`, `apt-get`, `pg_dump` by named admins and backup | A-45 |
 | N-14 | A shell or other root process outside PID 4401's tree | DeviceProcessEvents_CL sc-portal01, 06:52 to 09:30 | None; `python3` (parent cron) and its 11 children only, 12 processes in total | A-38 |
 | N-15 | A second exploit request (e.g. removing the cron line) | PortalAccessLog_CL, preview endpoint or 203.0.113[.]87, 06:52:49 to 09:30 | Only internal users fetching normal http(s) URLs, all 200 | A-40 |
@@ -67,11 +66,11 @@ I read this as a time-compressed replay. Its exact Syslog run attribution is unv
 |---|---|---|---|
 | AH-1 | The application itself made the pivot connections | The pivot connections at 07:16:11, 07:33:01 and 07:45:24 are each owned by PID 4401 (root, parent cron) (A-05, A-39). The app's internal connections are not logged (G6), so this rests on ownership, not on the absence of app traffic (A-25) | Ruled out for the observed pivots |
 | AH-2 | Entry was a stolen SSH credential | Shell parent is cron, not sshd (A-04); entry-window SSH logons are named admins from internal addresses only (A-32) | Ruled out within SSH logs |
-| AH-3 | A human ran the chain by hand | About 1 to 11 s command spacing within bursts, no repeated or corrected commands; operator directives only at gates (A-29, A-12) | Not supported; operator-gated AI most likely (Medium) |
-| AH-4 | The 07:45 admin API calls were the app's routine sweep | The only other `portal_svc` admin API calls (09-19 23:12, 23:13) are the replay copy (most consistent with a duplicate or logging artefact; exact Syslog run attribution unverified, R-05); PID 4401 connects 3.5 s before 07:45 (A-05, A-09) | Ruled out (attacker) |
+| AH-3 | A human ran the chain by hand | About 1 to 11 s command spacing within bursts, no repeated or corrected commands; operator directives only at gates (A-29, A-12) | Not supported; operator-gated AI likely (moderate confidence) |
+| AH-4 | The 07:45 admin API calls were the app's routine sweep | The only other `portal_svc` admin API calls (09-19 23:12, 23:13) are the replay copy (most consistent with a duplicate or logging artifact; exact Syslog run attribution unverified, R-05); PID 4401 connects 3.5 s before 07:45 (A-05, A-09) | Ruled out (attacker) |
 | AH-5 | Data reached the attacker | Connection and upload command only; no bytes or response (G2) | Open |
 | AH-6 | Cron gives the attacker ongoing access | One execution in 157 scheduled minutes; file state not logged (A-20, G3) | Unresolved; no repeat execution observed |
 | AH-7 | The environment (`env`, G4) held further credentials that were used | Every downstream login uses one of the two identities the agent names (A-28): `portal_svc` on sc-db01 and the admin API, `ci-builder` on the registry. A-23 (all sc-db01 logins), A-08 (all registry operations) and A-49 (all admin API requests from 10.5.0.10, 06:52 to 09:30, no user filter: only `portal_svc`) show no other identity | Not supported; `env` output itself remains unknown |
 | AH-8 | The database results were written into the staging folder (G5) | No file events under `.portal-cache` from 06:52:00 to 08:02:05 (A-21); statement bursts end 07:45:23, 17 min before `tar` | Open; cannot be tested in this telemetry |
-| AH-9 | The intrusion began earlier, at 2026-09-19 23:12 | Rows then are most consistent with a duplicate or logging artefact (exact Syslog run attribution unverified); no portal process or network activity 23:05 to 23:20 in any bucket (A-34 to A-36, A-46, A-47) | Not supported (High) |
-| AH-10 | The attacker modified `portal.conf` (G9) | Only file event is FileModified by `cat` PID 4410 at 07:05:16.978 (A-44); `cat` does not write its input; no hash or size recorded | Open; read logged as modify most likely (Medium) |
+| AH-9 | The intrusion began earlier, at 2026-09-19 23:12 | Rows then are most consistent with a duplicate or logging artifact (exact Syslog run attribution unverified); no portal process or network activity 23:05 to 23:20 in any bucket (A-34 to A-36, A-46, A-47) | Not supported (high confidence) |
+| AH-10 | The attacker modified `portal.conf` (G9) | Only file event is FileModified by `cat` PID 4410 at 07:05:16.978 (A-44); `cat` does not write its input; no hash or size recorded | Open; a read logged as a modify is likely (moderate confidence) |

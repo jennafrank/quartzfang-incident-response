@@ -6,7 +6,7 @@ title: "Operation QUARTZFANG: Incident Response"
 
 **Jenna Frank (Hot Pink Huntress)**, Security Operations Manager · [Portfolio](https://www.JennaFrank.co) · [Repository](https://github.com/jennafrank/quartzfang-incident-response)
 
-On 20 September 2026, an attacker took full control of SemiCrest's customer portal server with a single web request. It then used two stolen service passwords to reach three more systems. I investigated the incident in Microsoft Sentinel, following NIST SP 800-61r3 and SANS PICERL. The result is 10 findings with confidence levels, 5 detection rules tested on the incident's data, and a containment, eradication and recovery plan.
+On 20 September 2026, an attacker took full control of SemiCrest's customer portal server, used two stolen service passwords to move into three other internal systems, including the customer database, and tried to send an encrypted archive out of the company. I investigated the incident in Microsoft Sentinel, following NIST SP 800-61r3 and SANS PICERL. The result is 10 findings with confidence levels, 5 detection rules tested on the incident's data, and a containment, eradication and recovery plan.
 
 ## The problem
 
@@ -30,15 +30,18 @@ An alert fired at 06:52, and no response to it appears in the data. The business
 
 ## Outcome
 
-- **Not contained:** about 97 minutes of attacker activity were observed. Total dwell time is unknown.
-- **Disclosure unconfirmed:** two service passwords were obtained and reused (High confidence). Customer-data disclosure is not confirmed, and delivery of the attempted upload is unproven.
-- **Response, in order:** isolate the server first, then block two attacker addresses and disable the attacker's account. Change the stolen passwords after isolation, and fix the preview feature before the portal returns to service. All of these are proposed; none has been carried out yet.
+- **Dwell time (intrusion to detection):** about 12 seconds or less. The exploit landed at 06:52:48 and the alert fired in the same minute.
+- **Reconnaissance went undetected** for about 22 minutes.
+- **Not contained:** attacker activity lasted about 97 minutes after the alert, and the end of access is unknown.
+- **Lateral movement: yes.** Stolen service passwords reached the database, build store and admin platform.
+- **Exfiltration: attempted.** An encrypted upload opened a connection at 08:15. Whether any data arrived, and what it was, is unproven.
+- **Top recommendation:** isolate the portal server now. Then change the stolen passwords and remove the account the attacker created. Changing passwords before the server is isolated risks handing the attacker the new ones. None of the response has been carried out yet.
 
 ## Read more
 
 - [Impact, root cause and response plan](response-and-recommendations.md): report sections 08 to 14, covering IOCs, containment, eradication, recovery and recommendations
 - [Findings F1 to F10](https://github.com/jennafrank/quartzfang-incident-response/blob/main/investigation/findings.md), [timeline](https://github.com/jennafrank/quartzfang-incident-response/blob/main/investigation/timeline.md), [what I ruled out](https://github.com/jennafrank/quartzfang-incident-response/blob/main/investigation/what-i-ruled-out.md) and the [AI agent claims audit](https://github.com/jennafrank/quartzfang-incident-response/blob/main/investigation/ai-agent-claims.md)
 - [Detection rules](https://github.com/jennafrank/quartzfang-incident-response/tree/main/detections) and [hunting queries](https://github.com/jennafrank/quartzfang-incident-response/tree/main/hunting-queries)
-- [Full report, PDF](https://github.com/jennafrank/quartzfang-incident-response/blob/main/report/QUARTZFANG_IR_Report_JennaFrank_v4.0.pdf)
+- [Full report, v5.0 public edition, PDF](https://github.com/jennafrank/quartzfang-incident-response/blob/main/report/QUARTZFANG_IR_Report_JennaFrank_v5.0_public.pdf)
 
 [Back to my portfolio](https://www.JennaFrank.co)

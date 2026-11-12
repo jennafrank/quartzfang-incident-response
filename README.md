@@ -6,17 +6,32 @@
 
 **One web request. Full control of a server. And an attacker's AI that overstated its own wins.**
 
-An incident investigation in a Microsoft Sentinel workspace, by Jenna Frank. Report v4.0, issued 2026-11-01. TLP:CLEAR, published with permission.
+An incident investigation in a Microsoft Sentinel workspace, by Jenna Frank. Report v5.0, public edition, issued 2026-11-11 and revised after peer review and the grading debrief. TLP:CLEAR, published with permission.
 
-**[Project site](https://jennafrank.github.io/quartzfang-incident-response/)** · [Impact, root cause and response plan](docs/response-and-recommendations.md) · [Full report (PDF)](report/QUARTZFANG_IR_Report_JennaFrank_v4.0.pdf) · Full-resolution edition on the [Releases](../../releases) page
+**[Project site](https://jennafrank.github.io/quartzfang-incident-response/)** · [Impact, root cause and response plan](docs/response-and-recommendations.md) · [Full report (PDF)](report/QUARTZFANG_IR_Report_JennaFrank_v5.0_public.pdf) · Full-resolution edition on the [v5.0 release](../../releases/tag/v5.0) page
 
 ## In 60 seconds
 
-- **What happened.** On 20 September 2026, an attacker took full control of SemiCrest's customer portal server with a single web request. It then used two stolen service passwords to reach three more systems.
-- **What it went after.** It asked for customer contacts, project records and users' password hashes, then tried to upload an encrypted archive to an outside server. The logs show the requests and the upload attempt. They don't show what came back or whether the upload arrived.
-- **What I found.** About 97 minutes of attacker activity, written up as 10 findings, each with a confidence level. The attacker's AI agent also claimed successes that the server logs contradict.
+- **Impact.** On 20 September 2026, an attacker took full control of SemiCrest's customer portal server, used two stolen service passwords to move into three other internal systems, including the customer database, and tried to send an encrypted archive out of the company.
+- **How it got in.** Through the portal's link-preview feature, tricking it into sending commands to an internal data store that then ran the attacker's code with full administrator rights.
+- **Top recommendation.** Isolate the portal server now. Then change the stolen passwords and remove the account the attacker created. Changing passwords before the server is isolated risks handing the attacker the new ones.
+- **Timing.**
+  - Dwell time (intrusion to detection): about 12 seconds or less. The exploit landed at 06:52:48 and the alert fired in the same minute.
+  - Reconnaissance went undetected for about 22 minutes.
+  - Containment has not happened.
+  - Attacker activity lasted about 97 minutes, and the end of access is unknown.
+- **Lateral movement: yes.** From the portal to the database, build store and admin platform, using stolen service passwords.
+- **Exfiltration: attempted.** An encrypted upload to 198.51.100[.]210 opened a connection at 08:15. Whether any data arrived, and what it was, is unproven.
+- **What it went after.** It requested customer contacts, project records and users' password hashes. The logs record what was requested, not what was returned.
+- **What I found.** 10 findings, each with an estimative judgment and a confidence level. The attacker's AI agent also claimed successes that the server logs contradict.
 - **What I built.** 5 detection rules tested on this incident's data, and the 49 hunting queries behind the findings.
-- **What the business had to decide.** Isolate the server, block two attacker addresses and disable the account the attacker created. Start a legal review of possible customer data disclosure. Change the stolen passwords after isolation. Fix the vulnerable feature before the portal returns to service.
+- **Decisions needed now.**
+  - Isolate the portal server.
+  - Block the two attacker addresses.
+  - Disable the attacker-created account.
+  - Start the breach and notification assessment.
+  - Change the stolen service passwords and all database passwords, after isolation.
+  - Keep the portal offline until the preview feature is fixed.
 
 ## For detection engineers
 
@@ -50,22 +65,22 @@ flowchart LR
 What's worth a closer look:
 
 - **The agent-claims audit.** A separate AI agent log matches parts of the attack. Of its claims, two are contradicted by system records and two can't be confirmed. It says secrets were extracted; the request was refused (403). [ai-agent-claims.md](investigation/ai-agent-claims.md)
-- **Burst 2 is Medium, not High.** The second database burst matches the first by pattern and timing, but its login has no connection record tying it to the attacker's program (G7). [findings.md](investigation/findings.md#f5-the-attacker-searched-the-customer-database-twice-unlike-anything-the-application-did-in-the-baseline)
+- **Burst 2 is moderate confidence, not high.** The second database burst matches the first by pattern and timing, but its login has no connection record tying it to the attacker's process (G7). I assess it as very likely the attacker's, with moderate confidence. [findings.md](investigation/findings.md#f5-the-attacker-searched-the-customer-database-twice-unlike-anything-the-application-did-in-the-baseline)
 - **The replay rows I excluded.** Rows from the night before look like the whole attack. They hold the full database sequence compressed into about 1.6 seconds, repeated, with no portal process or network activity. I read them as a time-compressed replay and left them out (R-05). [what-i-ruled-out.md](investigation/what-i-ruled-out.md#why-i-excluded-the-2312-replay-rows-r-05)
 - **Requested is not returned.** None of the systems logged what they sent back (G1), so every data finding says "requested", and the upload says "attempted". [gaps.md](investigation/gaps.md)
 
 ## What I can prove and what I can't
 
-**I can show:** the break-in request, a single root cron run seconds later, every command the attacker's program started, its connections to three internal systems, what it asked each one for, the encrypted bundle, the upload command and connection, and the account it created.
+**I can show:** the break-in request, a single root cron run seconds later, every command the attacker's process started, its connections to three internal systems, what it asked each one for, the encrypted archive, the upload command and connection, and the account it created.
 
-**I can't show:** what any system sent back, what the bundle held, whether the upload arrived, whether the cron task is still in place, whether the new account was ever used, or when the attacker's access ended. The roughly 97 minutes is observed activity, not total dwell time. The AI agent's link to this incident is Medium confidence.
+**I can't show:** what any system sent back, what the archive held, whether the upload arrived, whether the cron task is still in place, whether the new account was ever used, or when the attacker's access ended. The roughly 97 minutes is the attacker activity I can see, from 06:52:48 to 08:30:00. It is not the end of access. I assess that an AI likely did the work with a person approving each stage, with moderate confidence, but I cannot prove the agent log belongs to this attack.
 
 ## How I investigated
 
-1. **Alert.** Started from the case brief's portal alert at 06:52 and its leads.
+1. **Alert.** Started from the reported alert at 06:52 and the case leads.
 2. **Portal requests.** Found the scan, the preview-feature probes and the accepted request to Redis (A-01 to A-03).
-3. **Process tree.** Traced the root shell (PID 4401) and every command it started (A-04, A-29).
-4. **Network connections.** Followed the shell's connections out to the attacker and in to three internal systems (A-05, A-39).
+3. **Process tree.** Traced the attacker's root process (PID 4401) and every command it started (A-04, A-29).
+4. **Network connections.** Followed its connections out to the attacker and in to three internal systems (A-05, A-39).
 5. **Downstream logs.** Read the database, build store and admin platform logs for each connection (A-06, A-08, A-09, A-23).
 6. **Alternatives.** Tested other explanations and swept every table for the attacker's addresses ([what-i-ruled-out.md](investigation/what-i-ruled-out.md)).
 
@@ -75,7 +90,7 @@ Timeline: [timeline.md](investigation/timeline.md). ATT&CK: [attack-mapping.md](
 
 | Path | Contents |
 |---|---|
-| `report/` | The full IR report, v4.0 PDF (TLP:CLEAR) |
+| `report/` | The full IR report, v5.0 public edition PDF (TLP:CLEAR) |
 | `investigation/` | [Findings](investigation/findings.md), [timeline](investigation/timeline.md), [gaps](investigation/gaps.md), [what I ruled out](investigation/what-i-ruled-out.md), [AI agent claims audit](investigation/ai-agent-claims.md) |
 | `docs/` | GitHub Pages site: [`index.md`](docs/index.md) and [impact, root cause and response](docs/response-and-recommendations.md) (report sections 08 to 14 in Markdown) |
 | `detections/` | 5 KQL detections, with Sentinel analytics rule YAML in `detections/sentinel/` |
@@ -89,11 +104,11 @@ KQL · Microsoft Sentinel · Incident response (NIST SP 800-61r3, SANS PICERL) �
 
 ## AI disclosure
 
-I used AI tools. Claude (Anthropic) was my hunt partner and helped draft the report. ChatGPT/Codex (OpenAI) reviewed drafts for overclaiming. I ran every query and submitted every answer. I checked observed findings against the logs, labelled case-brief statements and inferences as such, and kept unavailable outputs as stated limitations.
+I used AI tools. Claude (Anthropic) was my hunt partner and helped draft the report. ChatGPT/Codex (OpenAI) reviewed drafts for overclaiming. I ran every query and made every call in the report, and checked each finding against the logs. Case-brief statements and inferences are labeled as such.
 
 ## About me
 
-Jenna Frank, Security Operations Manager. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber) · Portfolio: [JennaFrank.co](https://www.JennaFrank.co)
+Jenna Frank, SOC Operations Lead. [linkedin.com/in/jenna-frank-cyber](https://www.linkedin.com/in/jenna-frank-cyber) · Portfolio: [JennaFrank.co](https://www.JennaFrank.co)
 
 ## License
 

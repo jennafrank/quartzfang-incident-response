@@ -1,6 +1,6 @@
 // A-45: Other hosts after the compromise (N-13)
 // Supports: N-13 · Captures: CAP-85
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 union DeviceProcessEvents_CL, DeviceEvents_CL, DeviceFileEvents_CL
 | where isempty(RunId)
 | where DeviceName in~ ("sc-db01", "sc-registry01", "sc-admin01")

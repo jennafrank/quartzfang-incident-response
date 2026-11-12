@@ -1,6 +1,6 @@
 // A-25: All internal connections from sc-portal01, no PID filter (AH-1)
 // Supports: AH-1 · Captures: CAP-49
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 DeviceNetworkEvents_CL
 | where isempty(RunId)
 | where DeviceName =~ "sc-portal01"

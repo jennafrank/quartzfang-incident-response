@@ -1,6 +1,6 @@
 // A-18: Registry activity from the portal (N-05)
 // Supports: F6, N-05 · Captures: CAP-39
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 ContainerRegistryLog_CL
 | where RunId == "qf-121-20260920"
 | where TimeGenerated between (datetime(2026-09-20T07:00:00Z) .. datetime(2026-09-20T09:30:00Z))

@@ -1,6 +1,6 @@
 // A-06: Attacker statements on sc-db01
 // Supports: F5 · Captures: CAP-09
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 Syslog
 | where Computer =~ "sc-db01"
 | where TimeGenerated between (datetime(2026-09-20T07:16:00Z) .. datetime(2026-09-20T07:16:30Z))

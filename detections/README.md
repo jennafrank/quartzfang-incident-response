@@ -1,6 +1,6 @@
 # Detection pack C-D1 to C-D5
 
-Source: Appendix C of the v4.0 report. Each rule is written in KQL for Microsoft Sentinel and was backtested against this incident's data.
+Source: Appendix C of the v5.0 report. Each rule is written in KQL for Microsoft Sentinel and was backtested against this incident's data.
 
 > **Tested on this incident's data, not a production false-positive rate.** One backtest on one incident shows a rule can catch this attack. It says nothing about how noisy the rule will be in your environment.
 
@@ -36,11 +36,11 @@ Each rule returned only attacker rows. C-D4 also returned the suspected replay c
 |---|---|---|
 | C-D1 | Matches only literal loopback and link-local strings | Decode `UrlOriginal` first; add private ranges, resolved addresses, `0.0.0.0`, `[::1]` and decimal or hex IP forms |
 | C-D2 | Misses compiled implants | Pair with any cron child making an outbound connection. The legitimate cron jobs in this data (`logrotate`, `ntpdate`, `/opt/monitoring/checks/*.sh`, seen in sc-admin01 Syslog CRON lines) carry no python interpreter with socket and shell-spawn markers, so the rule cannot match them. The process table records no cron child other than PID 4401 in the window (A-31), so that look-alike exists only in Syslog and could not be replayed through this rule |
-| C-D3 | Fires on legitimate provisioning | Add parent-process or same-account create-and-grant correlation. No legitimate account provisioning occurs in the lead-in, so this data held no harmless look-alike to exclude; false-positive behaviour on real provisioning is untested |
+| C-D3 | Fires on legitimate provisioning | Add parent-process or same-account create-and-grant correlation. No legitimate account provisioning occurs in the lead-in, so this data held no harmless look-alike to exclude; false-positive behavior on real provisioning is untested |
 | C-D4 | The burst-2 `projects ... ORDER BY revision DESC` query is outside its coverage | Exclude `pg_dump` (`backup` account); `application_name` is not a usable filter (A-37); suppress known replay or test windows |
 | C-D5 | Depends on a correct CI source list | Maintain the CI runner allowlist |
 
-Recommendation 6 in the report: tune C-D4 and C-D5 on 30 days of data, and build and test C-D6 (archive, encrypt, upload). C-D6 is not in this pack because it has not been built or tested.
+Recommendation 6 in the report: tune C-D4 and C-D5 on 30 days of data; build C-D6 (archive, encrypt, upload). C-D6 is not in this pack because it has not been built or tested.
 
 ## Files
 

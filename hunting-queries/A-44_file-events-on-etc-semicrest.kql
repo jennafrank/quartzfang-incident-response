@@ -1,6 +1,6 @@
 // A-44: File events on /etc/semicrest (G9)
 // Supports: F4, G9, AH-10 · Captures: CAP-84
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 DeviceFileEvents_CL
 | where isempty(RunId)
 | where Timestamp between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))
