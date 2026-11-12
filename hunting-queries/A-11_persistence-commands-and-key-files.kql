@@ -1,6 +1,6 @@
 // A-11: Persistence commands and key files
 // Supports: F9 · Captures: CAP-24 to CAP-25
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 // This item holds 2 queries; run each one on its own.
 DeviceProcessEvents_CL
 | where isempty(RunId)

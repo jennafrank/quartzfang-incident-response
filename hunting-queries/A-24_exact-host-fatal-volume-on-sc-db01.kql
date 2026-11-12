@@ -1,6 +1,6 @@
 // A-24: Exact-host FATAL volume on sc-db01
 // Supports: R-03 · Captures: CAP-47 to CAP-48
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 // This item holds 2 queries; run each one on its own.
 Syslog
 | where Computer =~ "sc-db01"

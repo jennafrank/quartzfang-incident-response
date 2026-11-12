@@ -1,6 +1,6 @@
 // A-21: Files written to .portal-cache before archiving (N-09)
 // Supports: F8, G5, N-09 · Captures: CAP-43
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 DeviceFileEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T08:02:05Z))

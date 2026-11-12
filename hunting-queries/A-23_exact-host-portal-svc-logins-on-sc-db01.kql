@@ -1,6 +1,6 @@
 // A-23: Exact-host portal_svc logins on sc-db01
 // Supports: F4, F5 · Captures: CAP-45 to CAP-46
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 // This item holds 2 queries; run each one on its own.
 Syslog
 | where Computer =~ "sc-db01"

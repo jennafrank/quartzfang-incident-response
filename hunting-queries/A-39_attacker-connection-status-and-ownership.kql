@@ -1,6 +1,6 @@
 // A-39: Attacker connection status and ownership
 // Supports: F8 · Captures: CAP-69
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 DeviceNetworkEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-20T06:52:00Z) .. datetime(2026-09-20T08:20:00Z))

@@ -1,6 +1,6 @@
 // A-07: portal_svc logins and application_name
 // Supports: F4, F5, R-02 · Captures: CAP-10 to CAP-13
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 Syslog
 | where Computer has "db01"
 | where TimeGenerated between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:00:00Z))

@@ -1,5 +1,5 @@
 // C-D2 cron-parented python with socket and shell-spawn markers (T1053.003, T1059.006)
-// Copied as printed in Appendix C of the v4.0 report. The printed rule carries no backtest time bounds or RunId filter.
+// Copied as printed in Appendix C of the v5.0 report. The printed rule carries no backtest time bounds or RunId filter.
 // Production schedule from the report: every 5 minutes over a 10-minute lookback.
 DeviceProcessEvents_CL
 | where FileName in~ ("python3", "python")

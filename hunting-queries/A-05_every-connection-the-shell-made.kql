@@ -1,6 +1,6 @@
 // A-05: Every connection the shell made
 // Supports: F3, F5 to F8 · Captures: CAP-08
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 DeviceNetworkEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-20T06:40:00Z) .. datetime(2026-09-20T09:30:00Z))

@@ -1,6 +1,6 @@
 // A-47: All sc-db01 Syslog at 2026-09-19 23:10 to 23:16 (R-05); result exported as query_data_28.csv (1,000 rows, display limit, completeness unverified)
 // Supports: R-05, AH-9 · Captures: CAP-87
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 Syslog
 | where Computer =~ "sc-db01"
 | where TimeGenerated between (datetime(2026-09-19T23:10:00Z) .. datetime(2026-09-19T23:16:00Z))

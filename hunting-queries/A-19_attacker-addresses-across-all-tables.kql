@@ -1,6 +1,6 @@
 // A-19: Attacker addresses across all tables (N-07)
 // Supports: N-07 · Captures: CAP-40 to CAP-41
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 // This item holds 2 queries; run each one on its own.
 union withsource=T *
 | where TimeGenerated between (datetime(2026-09-19T00:00:00Z) .. datetime(2026-09-20T09:30:00Z))

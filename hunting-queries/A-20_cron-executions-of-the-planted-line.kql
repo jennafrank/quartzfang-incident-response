@@ -1,6 +1,6 @@
 // A-20: Cron executions of the planted line (N-08)
 // Supports: F3, N-08, AH-6 · Captures: CAP-42
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v5.0 report; only line wrapping follows the PDF.
 Syslog
 | where Computer =~ "sc-portal01" and ProcessName =~ "CRON"
 | where TimeGenerated between (datetime(2026-09-20T06:50:00Z) .. datetime(2026-09-20T09:30:00Z))

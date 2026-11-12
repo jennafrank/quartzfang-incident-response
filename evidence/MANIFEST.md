@@ -1,12 +1,14 @@
 # Evidence manifest
 
-Each capture (CAP-nn) is a screenshot of a query result from the investigation. The SHA-256 values are of the original, uncompressed PNG screenshots, as printed in Appendix A of the v4.0 report. I re-hashed every original in my evidence folder and checked it against the report.
+Each capture (CAP-nn) is a screenshot of a query result from the investigation. The SHA-256 values are of the original, uncompressed PNG screenshots. I re-hashed every original in my evidence folder and checked it against the report.
+
+The v5.0 report prints only the queries its body cites, with their captures: 54 of the 96 (CAP-01 to CAP-09, CAP-14 to CAP-28, CAP-39, CAP-42 to CAP-46, CAP-50 to CAP-53, CAP-58, CAP-64 to CAP-69, CAP-73 to CAP-80 and CAP-92 to CAP-96). Their printed hashes match this manifest. The other 42 hashes are as printed in Appendix A of the v4.0 report. Capture numbers match between the two editions.
 
 The images in this folder are compressed JPEG copies, so their own hashes differ from the originals. Use the hash below to verify an original, not the JPEG.
 
-- 96 captures are listed in the report.
+- 96 captures are listed across the two editions.
 - 95 originals were found and match their printed hash exactly.
-- CAP-91 (A-49) is listed in the report, but no matching original was found in my evidence folder. Its hash is copied from the report and has not been re-verified.
+- CAP-91 (A-49) is listed in the v4.0 report, but no matching original was found in my evidence folder. Its hash is copied from the report and has not been re-verified.
 - 11 captures are included here as compressed copies.
 
 | Capture | Original SHA-256 | Original file | Hash re-verified | In this folder |

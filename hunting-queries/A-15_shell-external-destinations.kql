@@ -1,6 +1,6 @@
 // A-15: Shell external destinations (N-01)
 // Supports: N-01 · Captures: CAP-36
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 DeviceNetworkEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-20T06:40:00Z) .. datetime(2026-09-20T09:30:00Z))

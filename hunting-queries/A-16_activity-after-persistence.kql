@@ -1,6 +1,6 @@
 // A-16: Activity after persistence (N-02)
 // Supports: N-02 · Captures: CAP-37
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 DeviceProcessEvents_CL
 | where isempty(RunId) and DeviceName =~ "sc-portal01"
 | where Timestamp between (datetime(2026-09-20T08:15:01Z) .. datetime(2026-09-20T09:30:00Z))

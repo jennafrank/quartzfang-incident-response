@@ -1,6 +1,6 @@
 // A-36: RunId buckets at 2026-09-19 23:05 to 23:20 (R-05)
 // Supports: R-05, AH-9 · Captures: CAP-61 to CAP-63
-// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF.
+// Copied as printed in Appendix A of the v4.0 report; only line wrapping follows the PDF. The v5.0 report does not print this query and points readers to this folder.
 union PortalAccessLog_CL, ContainerRegistryLog_CL
 | where TimeGenerated between (datetime(2026-09-19T23:05:00Z) .. datetime(2026-09-19T23:20:00Z))
 | summarize Rows=count() by Type, RunId, SrcIpAddr
